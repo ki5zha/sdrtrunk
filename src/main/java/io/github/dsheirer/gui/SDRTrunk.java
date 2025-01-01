@@ -147,6 +147,7 @@ public class SDRTrunk implements Listener<TunerEvent>
     {
         if(!GraphicsEnvironment.isHeadless())
         {
+            //ERC Create JFrame under JavaFX
             mMainGui = new JFrame();
         }
 
