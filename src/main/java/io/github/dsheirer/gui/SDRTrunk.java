@@ -18,6 +18,7 @@
  */
 package io.github.dsheirer.gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.jidesoft.plaf.LookAndFeelFactory;
 import com.jidesoft.swing.JideSplitPane;
 import io.github.dsheirer.alias.AliasModel;
@@ -38,6 +39,7 @@ import io.github.dsheirer.gui.preference.CalibrateRequest;
 import io.github.dsheirer.gui.preference.PreferenceEditorType;
 import io.github.dsheirer.gui.preference.ViewUserPreferenceEditorRequest;
 import io.github.dsheirer.gui.preference.calibration.CalibrationDialog;
+import io.github.dsheirer.gui.theme.DarkMetalTheme;
 import io.github.dsheirer.gui.viewer.ViewRecordingViewerRequest;
 import io.github.dsheirer.icon.IconModel;
 import io.github.dsheirer.log.ApplicationLog;
@@ -170,7 +172,17 @@ public class SDRTrunk implements Listener<TunerEvent>
         {
             try
             {
+                //UIManager.setLookAndFeel(FlatDarkLaf.class.getName());
+                mLog.info("Operating system determined as " + operatingSystem);
+                mLog.info("UIManager is " + UIManager.getLookAndFeel().getClass().getName());
+                mLog.info("Look and Feel Factory checking result is Installed?"  + LookAndFeelFactory.isJideExtensionInstalled());
+                mLog.info("Classloader for LookandFeelFacotry is " + LookAndFeelFactory.class.getClassLoader());
+                Class<?> cls = Class.forName("com.jidesoft.plaf.LookAndFeelFactory");
+                mLog.info("Classname = " + cls.getName());
+                mLog.info("Attemtping to install JideExtension through line 182.");
+                MetalLookAndFeel.setCurrentTheme(new DarkMetalTheme());
                 UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+
                 LookAndFeelFactory.installJideExtension();
             }
             catch(Exception e)
