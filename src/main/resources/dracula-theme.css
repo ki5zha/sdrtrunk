@@ -1,0 +1,52 @@
+.root {
+    -fx-background-color: #282a36; /* Dark background */
+    -fx-text-fill: #f8f8f2;       /* Light text color */
+}
+
+.button {
+    -fx-background-color: #44475a; /* Button background */
+    -fx-text-fill: #f8f8f2;        /* Button text */
+    -fx-border-color: #6272a4;     /* Button border */
+    -fx-border-width: 2px;
+}
+
+.button:hover {
+    -fx-background-color: #6272a4; /* Hover effect */
+}
+
+.label {
+    -fx-text-fill: #f8f8f2;
+}
+
+.text-field {
+    -fx-background-color: #44475a;
+    -fx-text-fill: #f8f8f2;
+    -fx-border-color: #6272a4;
+}
+
+.scroll-pane {
+    -fx-background: #282a36;
+    -fx-border-color: #6272a4;
+}
+
+.tab-pane {
+    -fx-background-color: #282a36;
+}
+
+.tab-header-background {
+    -fx-background-color: #44475a;
+}
+
+.table-view {
+    -fx-background-color: #282a36;
+    -fx-text-fill: #f8f8f2;
+}
+
+.table-row-cell {
+    -fx-background-color: #282a36;
+    -fx-text-fill: #f8f8f2;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #6272a4;
+}
