@@ -568,4 +568,5 @@ public class IconManager extends Editor<Icon>
             return tableCell;
         }
     }
+    
 }
