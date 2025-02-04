@@ -18,6 +18,7 @@
  */
 package io.github.dsheirer.gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.jidesoft.plaf.LookAndFeelFactory;
 import com.jidesoft.swing.JideSplitPane;
 import io.github.dsheirer.alias.AliasModel;
@@ -38,6 +39,7 @@ import io.github.dsheirer.gui.preference.CalibrateRequest;
 import io.github.dsheirer.gui.preference.PreferenceEditorType;
 import io.github.dsheirer.gui.preference.ViewUserPreferenceEditorRequest;
 import io.github.dsheirer.gui.preference.calibration.CalibrationDialog;
+import io.github.dsheirer.gui.theme.DarkMetalTheme;
 import io.github.dsheirer.gui.viewer.ViewRecordingViewerRequest;
 import io.github.dsheirer.icon.IconModel;
 import io.github.dsheirer.log.ApplicationLog;
@@ -94,18 +96,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
 
 public class SDRTrunk implements Listener<TunerEvent>
 {
@@ -147,6 +143,7 @@ public class SDRTrunk implements Listener<TunerEvent>
     {
         if(!GraphicsEnvironment.isHeadless())
         {
+            //ERC Create JFrame under JavaFX
             mMainGui = new JFrame();
         }
 
@@ -169,12 +166,34 @@ public class SDRTrunk implements Listener<TunerEvent>
         {
             try
             {
+                //UIManager.setLookAndFeel(FlatDarkLaf.class.getName());
+                mLog.info("Operating system determined as " + operatingSystem);
+                mLog.info("UIManager is " + UIManager.getLookAndFeel().getClass().getName());
+                mLog.info("Look and Feel Factory checking result is Installed?"  + LookAndFeelFactory.isJideExtensionInstalled());
+                mLog.info("Classloader for LookandFeelFacotry is " + LookAndFeelFactory.class.getClassLoader());
+                Class<?> cls = Class.forName("com.jidesoft.plaf.LookAndFeelFactory");
+                mLog.info("Running Code Class<?> cls = Class.forName(\"com.jidesoft.plaf.LookAndFeelFactory\")) = " + cls.getName());
+
+                MetalLookAndFeel.setCurrentTheme(new DarkMetalTheme());
                 UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+
                 LookAndFeelFactory.installJideExtension();
+                mLog.info("Passed Installing Look and Feel JideExtension");
             }
             catch(Exception e)
             {
                 mLog.error("Error trying to set Metal look and feel for OS [" + operatingSystem + "]");
+            }
+        }
+        if(operatingSystem.contains("windows")){
+            try{
+                MetalLookAndFeel.setCurrentTheme(new DarkMetalTheme());
+                UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+            }
+            catch(UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                  IllegalAccessException e)
+            {
+                e.printStackTrace();
             }
         }
 
@@ -308,11 +327,13 @@ public class SDRTrunk implements Listener<TunerEvent>
         });
     }
 
+
     /**
      * Shows a dialog that lists the channels that have been designated for auto-start, sorted by auto-start order and
      * allows the user to start now, cancel, or allow the timer to expire and then start the channels.  The dialog will
      * only show if there are one ore more channels designated for auto-start.
      */
+
     private void autoStartChannels()
     {
         List<Channel> channels = mPlaylistManager.getChannelModel().getAutoStartChannels();
@@ -627,7 +648,69 @@ public class SDRTrunk implements Listener<TunerEvent>
         });
 
         menuBar.add(screenCaptureItem);
+
+        JMenuItem toggleGUI = new JMenuItem("DarkMode");
+        toggleGUI.addActionListener(toggleGuiModes ->{
+            if("DarkMode".equals(toggleGUI.getText())){
+                toggleGUI.setText("LightMode");
+                DarkmodeToggle("On");
+
+            }
+            else {
+                toggleGUI.setText("DarkMode");
+                DarkmodeToggle("Off");
+            }
+                    SwingUtilities.updateComponentTreeUI(mMainGui);
+        }
+        );
+        menuBar.add(toggleGUI);
     }
+
+
+   private static void DarkmodeToggle(String str) {
+        String operatingSystem = System.getProperty("os.name").toLowerCase();
+    mLog.error("Darkmode toggle activated");
+        if(operatingSystem.contains("mac") || operatingSystem.contains("nux"))
+       {
+           try
+           {
+               //UIManager.setLookAndFeel(FlatDarkLaf.class.getName());
+               if (str == "On") {
+                   MetalLookAndFeel.setCurrentTheme(new DarkMetalTheme());
+                   mLog.error("Setting Darkmode to " + str);
+                   UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+               }
+               else{
+                   MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+                   mLog.error("Setting DarkMode to " + str);
+                   UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+               }
+           }
+           catch(Exception e)
+           {
+               mLog.error("Error trying to set Metal look and feel for OS [" + operatingSystem + "]");
+           }
+       }
+       if(operatingSystem.contains("windows")){
+           try
+           {
+               //UIManager.setLookAndFeel(FlatDarkLaf.class.getName());
+               if (str == "Off") {
+                   MetalLookAndFeel.setCurrentTheme(new DarkMetalTheme ());
+                   UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+               }
+               else{
+                   MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+                   UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+               }
+           }
+           catch(Exception e)
+           {
+               mLog.error("Error trying to set Metal look and feel for OS [" + operatingSystem + "]");
+           }
+   }
+    }
+
 
     /**
      * Performs shutdown operations

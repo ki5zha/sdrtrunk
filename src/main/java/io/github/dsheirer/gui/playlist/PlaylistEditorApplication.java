@@ -60,7 +60,9 @@ public class PlaylistEditorApplication extends Application
     {
         mStage = primaryStage;
         mStage.setTitle("Playlist Editor");
+
         Scene scene = new Scene(getPlaylistEditor(), 1000, 750);
+       scene.getStylesheets().add(getClass().getResource("images/dracula-theme.css").toExternalForm());
         mStage.setScene(scene);
         mStage.show();
     }

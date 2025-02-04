@@ -21,6 +21,7 @@ package io.github.dsheirer.gui.viewer;
 
 import io.github.dsheirer.preference.UserPreferences;
 import javafx.application.Application;
+import org.junit.jupiter.api.Test;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -38,6 +39,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+//import javax.swing.*; erc
+import java.net.URL;
+import java.nio.file.Path;
 
 /**
  * Utility application to load and view .bits recording file with the messages fully parsed.
@@ -59,10 +64,11 @@ public class MessageRecordingViewer extends VBox
      */
     public MessageRecordingViewer()
     {
+        
         VBox.setVgrow(getTabPane(), Priority.ALWAYS);
         getChildren().addAll(getMenuBar(), getTabPane());
     }
-
+    
     public MenuBar getMenuBar()
     {
         if(mMenuBar == null)
@@ -94,7 +100,14 @@ public class MessageRecordingViewer extends VBox
             MenuItem exitMenu = new MenuItem("Exit");
             exitMenu.onActionProperty().set(event -> ((Stage)getScene().getWindow()).close());
             fileMenu.getItems().addAll(createNewViewerMenu, new SeparatorMenuItem(), exitMenu);
-            mMenuBar.getMenus().add(fileMenu);
+Menu viewMenu = new Menu("Theme");
+MenuItem darkMode = new MenuItem("DarkMode");
+darkMode.setOnAction(e -> {
+    toggleTheme();
+});
+            viewMenu.getItems().add(darkMode);
+            mMenuBar.getMenus().addAll(fileMenu, viewMenu);
+            
         }
 
         return mMenuBar;
@@ -103,6 +116,29 @@ public class MessageRecordingViewer extends VBox
     /**
      * Tab pane for each viewer instance
      */
+    
+    private void toggleTheme(){
+        Scene scene = getScene();
+        mLog.info("toggletheme has been pressed");
+        try{
+            mLog.info(getClass().getResource("src/main/resources/css/dark-mode.css").toString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (scene.getStylesheets().contains(getClass().getResource("src/main/resources/dark-mode.css").toExternalForm()))
+        {
+            mLog.info("into line 121");
+        scene.getStylesheets().remove(getClass().getResource("src/main/resources/light-mode.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("src/main/resources/dark-mode.css").toExternalForm());
+        
+        }
+        else{
+            mLog.info("could not find file into line 127");
+            scene.getStylesheets().remove(getClass().getResource("src/main/resources/dark-mode.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("src/main/resources/light-mode.css").toExternalForm());
+        }
+    }
+    
     public TabPane getTabPane()
     {
         if(mTabPane == null)
@@ -171,6 +207,7 @@ public class MessageRecordingViewer extends VBox
             public void start(Stage primaryStage) throws Exception
             {
                 Scene scene = new Scene(new MessageRecordingViewer(), 1100, 800);
+                scene.getStylesheets().add(getClass().getResource("src/main/resources/css/dark-mode.css").toExternalForm());
                 primaryStage.setTitle("Message Recording Viewer (.bits)");
                 primaryStage.setScene(scene);
                 primaryStage.show();

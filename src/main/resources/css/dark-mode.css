@@ -1,0 +1,53 @@
+/* Dark Mode Styles */
+
+/* Set the background of the entire application */
+.root {
+    -fx-background-color: #2b2b2b; /* Dark background */
+    -fx-text-fill: #d0d0d0;       /* Light gray text */
+}
+
+/* Menu Bar */
+.menu-bar {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+.menu {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+.menu-item {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: #2b2b2b; /* Dark background for the tab pane */
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #3c3f41; /* Darker tab header area */
+}
+
+.tab {
+    -fx-background-color: #3c3f41;
+    -fx-text-base-color: #d0d0d0;
+}
+
+.tab:selected {
+    -fx-background-color: #505050; /* Slightly lighter when selected */
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #d0d0d0; /* Light gray text */
+}
+
+/* Text Fields */
+.text-field {
+    -fx-background-color: #45494b;
+    -fx-text-inner-color: #ffffff;
+    -fx-prompt-text-fill: #808080;
+}

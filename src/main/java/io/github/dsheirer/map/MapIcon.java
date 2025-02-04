@@ -1,21 +1,20 @@
 /*******************************************************************************
  *     SDR Trunk 
  *     Copyright (C) 2014 Dennis Sheirer
- *
+ * <p>
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
- *
+ * <p>
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- *
+ * <p>
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>
- ******************************************************************************/
-package io.github.dsheirer.map;
+ *****************************************************************************
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -28,6 +27,17 @@ import org.slf4j.LoggerFactory;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.net.URL;
+ * */
+package io.github.dsheirer.map;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.github.dsheirer.icon.Icon;
+import io.github.dsheirer.settings.Setting;
+import io.github.dsheirer.settings.SettingType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MapIcon extends Setting implements Comparable<MapIcon>
 {
@@ -49,7 +59,7 @@ public class MapIcon extends Setting implements Comparable<MapIcon>
      * therefore this property is transient.
      */
     @JsonIgnore
-    private boolean mEditable;
+    private final boolean mEditable;
 
     @JsonIgnore
     private boolean mDefaultIcon;
@@ -57,10 +67,10 @@ public class MapIcon extends Setting implements Comparable<MapIcon>
     /**
      * Wrapper class for a map icon.
      *
-     * @param name - name of the icon - also used as key to lookup the icon
+     * @param name - name of the icon - also used as key to look up the icon
      * @param path - file path to the icon
      * @param editable - defines if the map icon or details can be edited
-     *
+     * <p>
      * Note: the default icons are constructed with editable = false, so that
      * they cannot be deleted from the Icon Manager editor window
      */
@@ -70,13 +80,17 @@ public class MapIcon extends Setting implements Comparable<MapIcon>
         mPath = path;
         mEditable = editable;
     }
-
+    
+    /*
+     * Don't use this constructor.  This is used by JAXB to unmarshall saved
+     * map icons.
+     */
     public MapIcon(String name, String path)
     {
         this(name, path, true);
     }
 
-    /**
+    /*
      * Don't use this constructor.  This is used by JAXB to unmarshall saved
      * map icons.
      */
@@ -121,24 +135,24 @@ public class MapIcon extends Setting implements Comparable<MapIcon>
                 {
                     mImageIcon = new ImageIcon(imageURL);
 
-                    /**
-                     * If the image is too big, scale it down to max pixel size squared
-                     */
+                    
+                     // If the image is too big, scale it down to max pixel size squared
+                     
                     if(mImageIcon.getIconWidth() > sMAX_IMAGE_DIMENSION ||
                         mImageIcon.getIconHeight() > sMAX_IMAGE_DIMENSION)
                     {
-                        /**
-                         * getScaled instance will correct any negative value to the
-                         * correct value, maintaining original aspect ratio.  So, we
-                         * only scale the larger value, and allow the image class to
-                         * determine the correct value for the other measurement
+                        /*
+                          getScaled instance will correct any negative value to the
+                          correct value, maintaining original aspect ratio.  So, we
+                          only scale the larger value, and allow the image class to
+                          determine the correct value for the other measurement
                          */
                         int height = -1;
                         int width = -1;
 
-                        /**
-                         * Use the larger width or height value to determine the
-                         * scaling factor
+                        /*
+                          Use the larger width or height value to determine the
+                          scaling factor
                          */
                         if(mImageIcon.getIconHeight() > mImageIcon.getIconWidth())
                         {
@@ -189,11 +203,10 @@ public class MapIcon extends Setting implements Comparable<MapIcon>
     @Override
     public boolean equals(Object obj)
     {
-        if(obj instanceof MapIcon)
+        if(obj instanceof MapIcon other)
         {
-            MapIcon other = (MapIcon)obj;
-
-            return other.getName().contentEquals(getName()) &&
+	        
+	        return other.getName().contentEquals(getName()) &&
                 other.getPath().contentEquals(getPath());
         }
         else
