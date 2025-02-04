@@ -19,7 +19,6 @@
 
 package io.github.dsheirer.gui.playlist;
 
-import com.jfoenix.assets.JFoenixResources;
 import io.github.dsheirer.alias.AliasModel;
 import io.github.dsheirer.gui.JavaFxWindowManager;
 import io.github.dsheirer.icon.IconModel;
@@ -63,7 +62,7 @@ public class PlaylistEditorApplication extends Application
         mStage.setTitle("Playlist Editor");
 
         Scene scene = new Scene(getPlaylistEditor(), 1000, 750);
-       scene.getStylesheets().add(getClass().getResource("dracula-theme.css").toExternalForm());
+       scene.getStylesheets().add(getClass().getResource("images/dracula-theme.css").toExternalForm());
         mStage.setScene(scene);
         mStage.show();
     }

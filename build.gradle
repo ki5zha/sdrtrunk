@@ -168,7 +168,17 @@ application {
         applicationDefaultJvmArgs = jvmArgsLinux
     }
 }
-
+processResources{
+    from("src/main/resouces"){
+        include"**/*.css"
+        include"**/*.png"
+        include"**/*.xml"
+        include"**/*.rules"
+        include"**/*.properties"
+        include"images/*.*"
+        include "css/*.css"
+    }
+}
 test {
     if(os.isWindows()) {
         jvmArgs = jvmArgsWindows
